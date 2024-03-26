@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow: hidden; /* Tambahkan overflow: hidden untuk menghindari masalah layout */
+            position: relative; /* Tambahkan position: relative untuk mengatur posisi tombol */
+        }
+
+        .product-item img {
+            width: 100px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .product-item p {
+            margin: 0;
+        }
+
+        .checkout-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .checkout-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Tambahkan styling untuk total harga */
+        .total-price {
+            text-align: right;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* Tambahkan styling untuk tombol hapus, info jumlah produk, dan tombol tambah dan kurang */
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .quantity {
+            position: absolute;
+            bottom: 5px;
+            
+            left: 5px;
+            background-color: #ccc;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .quantity button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Keranjang Belanja</h1>
+        <div id="cartItems">
+            <!-- Daftar produk dalam keranjang akan ditampilkan di sini -->
+        </div>
+        <div class="total-price" id="totalPrice">Total Harga: Rp 0</div> <!-- Tambahkan total harga di sini -->
+        <button class="checkout-btn" onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+       // Fungsi untuk menampilkan produk dalam keranjang
+function displayCart() {
+    // Dapatkan kontainer untuk produk dalam keranjang
+    var cartItemsContainer = document.getElementById('cartItems');
+
+    // Ambil daftar produk dari localStorage
+    var cartItems = JSON.parse(localStorage.getItem('cart'));
+
+    // Jika tidak ada produk dalam keranjang, tampilkan pesan kosong
+    if (!cartItems || cartItems.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Keranjang belanja kosong.</p>";
+        // Set total harga menjadi 0 ketika keranjang kosong
+        var totalPriceElement = document.getElementById('totalPrice');
+        totalPriceElement.textContent = "Total Harga: Rp 0";
+        return;
+    }
+
+    // Buat elemen untuk setiap produk dalam keranjang
+    var html = "";
+    var totalPrice = 0; // Total harga produk
+    cartItems.forEach(function(item, index) {
+        html += `
+            <div class="product-item">
+                <img src="${item.image}" alt="${item.name}">
+                <button class="delete-btn" onclick="removeFromCart(${index})">&times;</button>
+                <p>Nama: ${item.name}</p>
+                <p>Harga: ${item.price}</p>
+                <div class="quantity">
+                    <button onclick="decreaseQuantity(${index})">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="increaseQuantity(${index})">+</button>
+                </div>
+            </div>
+        `;
+        // Tambahkan harga produk ke total harga
+        totalPrice += parseInt(item.price) * parseInt(item.quantity);
+    });
+
+    // Tampilkan produk dalam keranjang
+    cartItemsContainer.innerHTML = html;
+
+    // Tampilkan total harga
+    var totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.textContent = "Total Harga: Rp " + totalPrice.toLocaleString(); // Format harga dengan pemisah ribuan
+}
+
+
+        // Fungsi untuk menambahkan produk ke keranjang
+        function addToCart(productName, productPrice, productImage) {
+            // Simpan informasi produk ke dalam localStorage
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                var newItem = {
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    quantity: 1
+                };
+                cart.push(newItem);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert("Produk " + productName + " telah ditambahkan ke keranjang dengan harga " + productPrice);
+            // Panggil fungsi untuk menampilkan produk dalam keranjang setelah ditambahkan
+            displayCart();
+        }
+
+     // Fungsi untuk menghapus produk dari keranjang
+function removeFromCart(index) {
+    // Ambil daftar produk dari localStorage
+    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Ambil harga produk yang dihapus dan parse sebagai angka float
+    var removedItemPrice = parseFloat(cart[index].price) * parseInt(cart[index].quantity);
+    
+    // Hapus produk dari daftar menggunakan indeks
+    cart.splice(index, 1);
+    
+    // Jika keranjang kosong setelah menghapus produk
+    if (cart.length === 0) {
+        // Set total harga menjadi 0
+        var totalPrice = 0;
+    } else {
+        // Ambil total harga dari localStorage dan parse sebagai angka float
+        var totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+        // Kurangi harga produk yang dihapus dari total harga
+        totalPrice -= removedItemPrice;
+    }
+    
+    // Simpan daftar produk yang diperbarui ke localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Simpan total harga yang diperbarui ke localStorage
+    localStorage.setItem('totalPrice', totalPrice);
+    
+    // Panggil fungsi untuk menampilkan produk dalam keranjang setelah dihapus
+    displayCart();
+}
+
+
+
+
+        // Fungsi untuk menambahkan jumlah produk
+        function increaseQuantity(index) {
+            // Ambil daftar produk dari localStorage
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Tambahkan 1 ke jumlah produk
+            cart[index].quantity++;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            // Panggil fungsi untuk menampilkan produk dalam keranjang setelah diubah
+            displayCart();
+        }
+
+        // Fungsi untuk mengurangi jumlah produk
+        function decreaseQuantity(index) {
+            // Ambil daftar produk dari localStorage
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Kurangi 1 dari jumlah produk jika jumlah lebih dari 1
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                // Panggil fungsi untuk menampilkan produk dalam keranjang setelah diubah
+                displayCart();
+            }
+        }
+
+        // Fungsi untuk menangani checkout
+        function checkout() {
+            // Di sini Anda dapat menambahkan logika untuk proses checkout, seperti
+            // mengirim pesanan ke server, membersihkan keranjang, dll.
+            // Untuk tujuan demonstrasi, kita akan hanya menampilkan pesan sederhana
+            alert("Proses checkout berhasil!");
+        }
+
+        // Panggil fungsi untuk menampilkan produk dalam keranjang saat halaman dimuat
+        displayCart();
+    </script>
+</html>

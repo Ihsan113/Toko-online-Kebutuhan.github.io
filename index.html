@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .container {
+            width: 100%;
+            margin: 20px auto;
+            overflow-x: auto; /* Membuat kontainer gulir horizontal */
+            white-space: nowrap; /* Mengatur agar elemen tidak pindah ke baris berikutnya */
+            padding-bottom: 20px; /* Menambahkan padding bawah agar tidak terpotong */
+        }
+
+        .product-group {
+            margin-bottom: 30px;
+        }
+
+        .product-group h3 {
+            margin-left: 20px;
+        }
+
+        .product-card {
+            width: 320px; /* Lebar card */
+            margin-right: 10px; /* Jarak antar card */
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block; /* Menjadikan card sebagai inline block agar bisa digulir */
+            vertical-align: top; /* Menjadikan card sejajar ke atas */
+        }
+
+        .product-card img {
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            object-fit: cover;
+            height: 280px;
+        }
+
+        .product-card-content {
+            padding: 15px;
+        }
+
+        .product-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .product-card p {
+            margin: 0;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+       .product-card button {
+    background-color: #c96c43cc;
+    color: white;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 85%; /* Tombol beli mengambil lebar penuh card */
+    margin: auto; /* Mengatur margin otomatis secara vertikal dan horizontal */
+    display: block; /* Mengubah tombol menjadi elemen blok untuk menerapkan margin otomatis */
+}
+
+
+        .product-card button:hover {
+            background-color: #45a049;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #000000eb;
+            color: white;
+        }
+
+        .header .cart {
+            display: flex;
+            align-items: center;
+            text-decoration: none; /* Menghilangkan garis bawah pada tautan */
+        }
+
+        .header .cart .icon {
+            margin-right: 5px;
+        }
+
+        .header .cart .count {
+            background-color: #4CAF50;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer; /* Menjadikan kursor menunjukkan tangan saat dihover */
+        }
+       
+ 
+    /* Elemen garis vertikal */
+    .vertical-line {
+        border-left: 5px solid #ff8c00; /* Warna garis vertikal */
+        height: 20px; /* Sesuaikan tinggi garis vertikal */
+        margin-left: 5px; /* Sesuaikan jarak dari judul */
+    }
+
+  
+
+ .slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 250px; /* Sesuaikan tinggi slider dengan kebutuhan Anda */
+}
+
+.slider {
+    width: 300%; /* Lebar slider sesuai jumlah gambar (3 gambar x 100%) */
+    display: flex;
+    transition: all 0.5s ease;
+}
+
+.slide {
+    width: 100%;
+    flex: 0 0 auto;
+    height: 250px;
+    overflow: hidden; /* Mengatur overflow untuk menjaga gambar dalam kontainer */
+}
+
+.slide img {
+    max-width: 100%;
+    height: 250px; /* Memastikan gambar menutupi seluruh area slide */
+    object-fit: cover; /* Menyamakan ukuran gambar dengan area slide */
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Toko Suswanto</h2>
+        <!-- Tambahkan link ke halaman keranjang -->
+        <a href="cart.html" class="cart">
+            <span class="icon">🛒</span>
+            <span class="count">0</span>
+        </a>
+    </div>
+  <div class="slider-container">
+  <div class="slider">
+    <div class="slide">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLQkD4fUDd0aY0fJCkmUHPA4Y5lob00eyZi8yVWK38MZ8ciXOTYN7VuPs&s=10" alt="Gambar 1">
+    </div>
+    <div class="slide">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWhL6cFrn9zqsQe9_YvLFZMbMIDBYYr4doTIc4rz9_72aZTP3nP_twdTL5&s=10" alt="Gambar 2">
+    </div>
+    <div class="slide">
+      <img src="https://image.made-in-china.com/44f3j00NWVQmFsaSObh/Easy-Top-Solid-Wood-Furniture-Black-Shaker-Modern-Frameless-Kitchen-Cabinetry.webp" alt="Gambar 3">
+    </div>
+  </div>
+</div>
+<div class="vertical-line"> <h3>Pilih produk:</h3></div>
+
+
+    <hr>
+    <div class="container" id="productsContainer">
+        <!-- Produk akan ditampilkan di sini -->
+    </div>
+
+<footer style="background-color: #6b3a24d3; color: white; padding: 20px; text-align: center;">
+   <p>Powered by Development @Ihsan</p>
+   <div style="background-color: #f0f0f0; height: 2px; margin-top: 10px;"></div>
+</footer>
+
+
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script>
+     // Inisialisasi Firebase dan kode lainnya di sini
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjhwIaN276iG1QB6aNQbNX1mfkvwrK1SQ",
+            authDomain: "toko-online-ku-8be4a.firebaseapp.com",
+            projectId: "toko-online-ku-8be4a",
+            storageBucket: "toko-online-ku-8be4a.appspot.com",
+            messagingSenderId: "714682286460",
+            appId: "1:714682286460:web:bfd1636ab9c83ef24824f9",
+            measurementId: "G-7RS1N1FT8Z"
+        };
+    firebase.initializeApp(firebaseConfig);
+
+    // Fungsi untuk mengupdate indikator jumlah barang di keranjang
+    function updateCartCount(count) {
+        var cartCount = document.querySelector('.count');
+        cartCount.textContent = count;
+    }
+
+    // Panggil fungsi untuk mengatur nilai awal indikator jumlah barang di keranjang menjadi 0
+    updateCartCount(0);
+
+    // Dapatkan referensi koleksi produk di Firestore
+    var productsRef = firebase.firestore().collection("products");
+
+    // Ambil data produk dari Firestore dan tampilkan di halaman utama
+    productsRef.get().then(function(querySnapshot) {
+        var productsContainer = document.getElementById('productsContainer');
+        var productGroups = {}; // Objek untuk menyimpan produk berdasarkan jenisnya
+
+        querySnapshot.forEach(function(doc) {
+            // Ambil data produk dari dokumen Firestore
+            var product = doc.data();
+            var productType = product.type;
+
+            // Buat elemen card untuk setiap produk
+            var productCard = document.createElement('div'); 
+            productCard.classList.add('product-card'); 
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <div class="product-card-content">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>Harga: ${product.price}</p>
+                    <p>Jumlah: ${product.quantity}</p>
+                    <button onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Beli</button>
+                </div>
+            `;
+
+            // Tambahkan card produk ke dalam kontainer produk
+            if (!productGroups[productType]) {
+                productGroups[productType] = document.createElement('div');
+                productGroups[productType].classList.add('product-group');
+                productsContainer.appendChild(productGroups[productType]);
+
+                // Tambahkan judul jenis produk
+                var productTypeTitle = document.createElement('h3');
+                productTypeTitle.textContent = productType;
+                productGroups[productType].appendChild(productTypeTitle);
+            }
+            productGroups[productType].appendChild(productCard);
+        });
+
+        // Panggil fungsi untuk mengupdate indikator jumlah barang di keranjang
+        updateCartCount(querySnapshot.size);
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+
+    // Fungsi untuk menambahkan produk ke keranjang
+    function addToCart(productName, productPrice, productImage) {
+        // Simpan informasi produk ke dalam localStorage
+        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+        var existingItem = cart.find(item => item.name === productName);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            var newItem = {
+                name: productName,
+                price: parseFloat(productPrice), // Parse harga sebagai angka float
+                image: productImage,
+                quantity: 1
+            };
+            cart.push(newItem);
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert("Produk " + productName + " telah ditambahkan ke keranjang dengan harga " + productPrice);
+        
+        // Panggil fungsi untuk mengupdate indikator jumlah barang di keranjang
+        updateCartCount(cart.length);
+    }
+    
+    <!-- untuk slider-->
+    let currentIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+  
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.style.transform = `translateX(-${index * 100}%)`;
+    });
+  }
+  
+  function nextSlide() {
+    currentIndex++;
+    if (currentIndex === slides.length) {
+      currentIndex = 0;
+    }
+    showSlide(currentIndex);
+  }
+  
+  setInterval(nextSlide, 3000); // Ganti gambar setiap 3 detik
+</script>
+
+</body>
+</html>
+
+
+ 
+
